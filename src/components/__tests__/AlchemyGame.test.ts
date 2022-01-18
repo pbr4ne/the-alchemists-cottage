@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import AlchemyGame from './AlchemyGame.vue'
+import AlchemyGame from '../AlchemyGame.vue'
 
 describe('AlchemyGame', () => {
   it('should display header text', () => {

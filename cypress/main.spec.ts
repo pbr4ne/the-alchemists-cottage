@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+// @ts-check
 describe('Main', () => {
   it('should display header text', () => {
     cy.visit('/')

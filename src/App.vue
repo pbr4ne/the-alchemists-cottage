@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AlchemyGame from './components/AlchemyGame.vue'
+import AlchemyGame from '@/components/AlchemyGame.vue'
 </script>
 
 <template>

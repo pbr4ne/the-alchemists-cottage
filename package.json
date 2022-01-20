@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit --skipLibCheck && vite build",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "unit": "jest src",
     "e2e": "set NODE_OPTIONS=--openssl-legacy-provider && cypress run"

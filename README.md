@@ -17,6 +17,11 @@ npm run dev
 npm run build
 ```
 
+### Locally previews build
+```
+npm run preview
+```
+
 ### Runs unit test suite
 ```
 npm run unit

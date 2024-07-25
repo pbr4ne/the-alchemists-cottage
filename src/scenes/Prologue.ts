@@ -1,9 +1,9 @@
-import Phaser from "phaser";
+import BaseScene from "./BaseScene";
 import ActionButton from "../prefabs/ActionButton";
 import DescriptionBox from "../prefabs/DescriptionBox";
 import { GO_TO_KITCHEN, PICK_UP_KETTLE } from "../utilities/ActionConstants";
 
-export default class Prologue extends Phaser.Scene {
+export default class Prologue extends BaseScene {
 
     private button!: ActionButton;
     private descriptionBox!: DescriptionBox;
@@ -11,12 +11,8 @@ export default class Prologue extends Phaser.Scene {
     private textContent2: string = "The tea smells floral and like a delicate spice. You know there are teacups in the kitchen, though you can't remember ever being in the kitchen before.";
     private textContent3: string = "You see a dusty kitchen nook.";
     
-    private currentTextContent: string;
-    private buttonWidth: number = 200;
-
     constructor() {
         super("Prologue");
-        this.currentTextContent = this.textContent1;
     }
 
     create() {
@@ -25,28 +21,21 @@ export default class Prologue extends Phaser.Scene {
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
 
-        this.descriptionBox = new DescriptionBox(this, centerX - this.buttonWidth, centerY - 150, this.buttonWidth, this.currentTextContent);
+        this.descriptionBox = new DescriptionBox(this, centerX - 200, centerY - 150, 200, this.textContent1);
 
         this.button = new ActionButton(this, centerX, centerY + 100, PICK_UP_KETTLE, () => {
             if (this.button.getButtonText() === GO_TO_KITCHEN) {
-                this.renderFinalText(this.textContent3);
+                this.renderText(this.textContent3);
             } else {
-                this.renderNewText(this.textContent2, GO_TO_KITCHEN);
+                this.renderText(this.textContent2, GO_TO_KITCHEN);
             }
         });
     }
 
-    private renderNewText(newText: string, newButtonLabel: string) {
-        this.descriptionBox.updateText(newText);
-        this.fadeInButton(newButtonLabel);
-        this.currentTextContent = newText;
-    }
-
-    private renderFinalText(finalText: string) {
-        this.descriptionBox.updateText(finalText);
-    }
-
-    private fadeInButton(newLabel: string) {
-        this.button.resetButton(newLabel);
+    private renderText(text: string, buttonLabel?: string) {
+        this.descriptionBox.updateText(text);
+        if (buttonLabel) {
+            this.button.resetButton(buttonLabel);
+        }
     }
 }

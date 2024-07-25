@@ -45,11 +45,15 @@ export default class ActionButton extends Phaser.GameObjects.Container {
         const y = -this.buttonHeight / 2 - this.buttonPadding + 5;
         const height = this.buttonHeight + this.buttonPadding * 2 - 10;
         const radius = 20;
-
+    
         this.fillGraphics.clear();
         this.fillGraphics.fillStyle(0xffb703, 1);
-
-        this.fillGraphics.fillRoundedRect(x, y, width, height, { tl: radius, tr: radius, bl: radius, br: radius });
+    
+        if (width > 2 * radius) {
+            this.fillGraphics.fillRoundedRect(x, y, width, height, { tl: radius, tr: radius, bl: radius, br: radius });
+        } else {
+            this.fillGraphics.fillRect(x, y, width, height);
+        }
     }
 
     private onButtonHover() {

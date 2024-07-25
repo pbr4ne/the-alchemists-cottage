@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import WebFont from 'webfontloader';
 import assetPackUrl from "../../static/assets/asset-pack.json";
+import { checkUrlParam } from "../utilities/GameUtils";
 
 export default class Preload extends Phaser.Scene {
 
@@ -15,7 +16,11 @@ export default class Preload extends Phaser.Scene {
 
     protected create() {
         this.loadFonts(() => {
-            this.scene.start("Intro");
+            if (checkUrlParam("fast", "true")) {
+                this.scene.start("Prologue");
+            } else {
+                this.scene.start("Intro");
+            }
         });
     }
 

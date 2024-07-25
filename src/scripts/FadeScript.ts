@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { checkUrlParam } from "../utilities/GameUtils";
 
 export default class FadeScript {
     constructor(
@@ -12,6 +13,10 @@ export default class FadeScript {
             fadeObject.setAlpha(0);
         } else {
             fadeObject.setAlpha(1);
+        }
+
+        if (checkUrlParam("fast", "true")) {
+            duration = 500;
         }
 
         scene.tweens.add({

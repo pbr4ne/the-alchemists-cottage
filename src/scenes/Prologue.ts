@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import FadeScript from "../scripts/FadeScript";
+import { checkUrlParam } from "../utilities/GameUtils";
 
 export default class Prologue extends Phaser.Scene {
 
@@ -11,9 +12,12 @@ export default class Prologue extends Phaser.Scene {
 
     private kettleProgress: number = 0;
     private textBox!: Phaser.GameObjects.Text;
-    private textContent1: string = "You wake up to the sound of a tea kettle boiling.";
-    private textContent2: string = "You recall there are teacups in the kitchen.";
+    private textContent1: string = "You wake up to the sound of a tea kettle whistling. The bed you're in is warm and inviting. You feel sad for some reason, though you're not sure why.";
+    private buttonContent1: string = "Pick up kettle";
+    private textContent2: string = "The tea smells floral and like a delicate spice. You know there are teacups in the kitchen, though you can't remember ever being in the kitchen before.";
+    private buttonContent2: string = "Go to kitchen";
     private textContent3: string = "You see a dusty kitchen nook.";
+    
     private currentTextContent: string;
     private textIndex: number = 0;
     private typingEvent!: Phaser.Time.TimerEvent;
@@ -36,7 +40,7 @@ export default class Prologue extends Phaser.Scene {
 
         this.drawButton(0x283618);
 
-        this.buttonText = this.add.text(0, 0, "Pick up kettle", {
+        this.buttonText = this.add.text(0, 0, this.buttonContent1, {
             fontFamily: 'Arvo',
             fontSize: '24px',
             color: '#283618',
@@ -53,17 +57,21 @@ export default class Prologue extends Phaser.Scene {
         this.buttonContainer.on('pointerout', this.onButtonOut, this);
         this.buttonContainer.on('pointerdown', this.onButtonClick, this);
 
-        this.textBox = this.add.text(centerX, centerY - 100, '', {
+        this.textBox = this.add.text(centerX - this.buttonWidth, centerY - 150, '', {
             fontFamily: 'Arvo',
             fontSize: '24px',
             color: '#000000',
-            align: 'center',
+            align: 'left',
             wordWrap: { width: this.buttonWidth * 2, useAdvancedWrap: true }
         });
-        this.textBox.setOrigin(0.5, 0.5);
+        this.textBox.setOrigin(0, 0);
 
+        let delay = 50;
+        if (checkUrlParam("fast", "true")) {
+            delay = 10;
+        }
         this.typingEvent = this.time.addEvent({
-            delay: 50,
+            delay,
             callback: this.renderText,
             callbackScope: this,
             loop: true
@@ -93,20 +101,24 @@ export default class Prologue extends Phaser.Scene {
         } else {
             this.typingEvent.remove();
             if (this.currentTextContent === this.textContent1) {
-                this.fadeInButton("Pick up kettle");
+                this.fadeInButton(this.buttonContent1);
             } else if (this.currentTextContent === this.textContent2) {
-                this.time.delayedCall(500, () => this.fadeInButton("Go to kitchen"), [], this);
+                this.time.delayedCall(500, () => this.fadeInButton(this.buttonContent2), [], this);
             }
         }
     }
 
     private renderNewText(newText: string) {
+        let delay = 50;
+        if (checkUrlParam("fast", "true")) {
+            delay = 10;
+        }
         this.textBox.setText('');
         this.textBox.alpha = 1;
         this.currentTextContent = newText;
         this.textIndex = 0;
         this.typingEvent = this.time.addEvent({
-            delay: 50,
+            delay,
             callback: this.renderText,
             callbackScope: this,
             loop: true
@@ -128,10 +140,14 @@ export default class Prologue extends Phaser.Scene {
     }
 
     private onButtonClick() {
+        let duration = 5000;
+        if (checkUrlParam("fast", "true")) {
+            duration = 500;
+        }
         this.tweens.add({
             targets: this,
             kettleProgress: { from: 0, to: this.buttonWidth },
-            duration: 5000,
+            duration,
             onUpdate: () => {
                 this.drawButton(0xbc6c25);
             },
@@ -139,7 +155,7 @@ export default class Prologue extends Phaser.Scene {
                 this.kettleProgress = 0;
                 this.drawButton(0x283618);
                 this.fadeOutButtonAndText(() => {
-                    if (this.buttonText.text === "Go to kitchen") {
+                    if (this.buttonText.text === this.buttonContent2) {
                         this.renderNewText(this.textContent3);
                     } else {
                         this.renderNewText(this.textContent2);
@@ -150,8 +166,8 @@ export default class Prologue extends Phaser.Scene {
     }
 
     private fadeOutButtonAndText(callback: () => void) {
-        new FadeScript(this, this.buttonContainer as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, false, 1000);
-        new FadeScript(this, this.textBox as Phaser.GameObjects.Text & Phaser.GameObjects.Components.Alpha, false, 1000, () => {
+        new FadeScript(this, this.buttonContainer as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, false, 3000);
+        new FadeScript(this, this.textBox as Phaser.GameObjects.Text & Phaser.GameObjects.Components.Alpha, false, 3000, () => {
             this.textBox.alpha = 1;
             callback();
         });

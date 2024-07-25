@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import BaseScene from "./BaseScene";
+import FadeScript from "../scripts/FadeScript";
 
 export default class Intro extends BaseScene {
 
@@ -55,19 +56,11 @@ export default class Intro extends BaseScene {
         } else {
             this.time.removeAllEvents();
 
-            this.time.delayedCall(500, this.fadeOutText, [], this);
+            this.time.delayedCall(500, () => {
+                new FadeScript(this, this.text, false, 3000, () => {
+                    this.scene.start('Game');
+                });
+            });
         }
-    }
-
-    private fadeOutText() {
-        this.tweens.add({
-            targets: this.text,
-            alpha: 0,
-            duration: 3000,
-            ease: 'Power2',
-            onComplete: () => {
-                this.text.destroy();
-            }
-        });
     }
 }

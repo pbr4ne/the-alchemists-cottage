@@ -1,15 +1,14 @@
 import Phaser from "phaser";
 import ActionButton from "../prefabs/ActionButton";
 import DescriptionBox from "../prefabs/DescriptionBox";
+import { GO_TO_KITCHEN, PICK_UP_KETTLE } from "../utilities/ActionConstants";
 
 export default class Prologue extends Phaser.Scene {
 
     private button!: ActionButton;
     private descriptionBox!: DescriptionBox;
     private textContent1: string = "You wake up to the sound of a tea kettle whistling. The bed you're in is warm and inviting. You feel sad for some reason, though you're not sure why.";
-    private buttonContent1: string = "Pick up kettle";
     private textContent2: string = "The tea smells floral and like a delicate spice. You know there are teacups in the kitchen, though you can't remember ever being in the kitchen before.";
-    private buttonContent2: string = "Go to kitchen";
     private textContent3: string = "You see a dusty kitchen nook.";
     
     private currentTextContent: string;
@@ -28,11 +27,11 @@ export default class Prologue extends Phaser.Scene {
 
         this.descriptionBox = new DescriptionBox(this, centerX - this.buttonWidth, centerY - 150, this.buttonWidth, this.currentTextContent);
 
-        this.button = new ActionButton(this, centerX, centerY + 100, this.buttonContent1, () => {
-            if (this.button.getButtonText() === this.buttonContent2) {
+        this.button = new ActionButton(this, centerX, centerY + 100, PICK_UP_KETTLE, () => {
+            if (this.button.getButtonText() === GO_TO_KITCHEN) {
                 this.renderFinalText(this.textContent3);
             } else {
-                this.renderNewText(this.textContent2, this.buttonContent2);
+                this.renderNewText(this.textContent2, GO_TO_KITCHEN);
             }
         });
     }

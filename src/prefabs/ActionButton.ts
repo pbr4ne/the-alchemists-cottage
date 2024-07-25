@@ -9,7 +9,7 @@ export default class ActionButton extends Phaser.GameObjects.Container {
     private buttonWidth: number;
     private buttonHeight: number;
     private buttonOutlineWidth: number;
-    private kettleProgress: number = 0;
+    private actionProgress: number = 0;
 
     constructor(scene: Phaser.Scene, x: number, y: number, label: string, onClick: () => void) {
         super(scene, x, y);
@@ -55,9 +55,9 @@ export default class ActionButton extends Phaser.GameObjects.Container {
         this.outlineGraphics.strokeRect(x, y, this.buttonWidth, this.buttonHeight);
 
         this.fillGraphics.clear();
-        if (this.kettleProgress > 0) {
+        if (this.actionProgress > 0) {
             this.fillGraphics.fillStyle(0xffb703, 1);
-            this.fillGraphics.fillRect(x, y, this.kettleProgress, this.buttonHeight);
+            this.fillGraphics.fillRect(x, y, this.actionProgress, this.buttonHeight);
         }
     }
 
@@ -73,13 +73,13 @@ export default class ActionButton extends Phaser.GameObjects.Container {
         let duration = getFillDuration();
         this.scene.tweens.add({
             targets: this,
-            kettleProgress: { from: 0, to: this.buttonWidth },
+            actionProgress: { from: 0, to: this.buttonWidth },
             duration,
             onUpdate: () => {
                 this.drawButton(0xbc6c25);
             },
             onComplete: () => {
-                this.kettleProgress = 0;
+                this.actionProgress = 0;
                 this.drawButton(0x283618);
                 this.setVisible(false);
                 onClick();

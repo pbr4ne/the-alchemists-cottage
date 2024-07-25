@@ -45,6 +45,7 @@ module.exports = {
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
     },
+    devtool: 'source-map', 
     devServer: {
         historyApiFallback: true,
         allowedHosts: 'all',

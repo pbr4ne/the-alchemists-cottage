@@ -30,7 +30,7 @@ export default class Preload extends Phaser.Scene {
 
 	create() {
 		this.loadFonts(() => {
-			this.scene.start("Game");
+			this.scene.start("Intro");
 		});
 	}
 

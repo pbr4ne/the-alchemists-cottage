@@ -5,30 +5,32 @@ import { eventBus } from '../utilities/EventBus';
 
 export default class ActionButton extends Phaser.GameObjects.Container {
     private action: Action;
-    private outlineGraphics: Phaser.GameObjects.Graphics;
+    private onClick: () => void;
+    private buttonOutline: Phaser.GameObjects.Image;
     private fillGraphics: Phaser.GameObjects.Graphics;
     private buttonImage: Phaser.GameObjects.Image;
     private buttonWidth: number = 80;
     private buttonHeight: number = 80;
-    private buttonOutlineWidth: number = 5;
-    private buttonPadding: number = 20;
+    private buttonPadding: number = 30;
     private actionProgress: number = 0;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, action: Action) {
+    constructor(scene: Phaser.Scene, x: number, y: number, action: Action, onClick?: () => void) {
         super(scene, x, y);
 
         this.action = action;
+        this.onClick = onClick || (() => { });
 
-        this.outlineGraphics = scene.add.graphics();
         this.fillGraphics = scene.add.graphics();
+
+        this.buttonOutline = scene.add.image(0, 0, 'square').setDisplaySize(this.buttonWidth + this.buttonPadding * 2, this.buttonHeight + this.buttonPadding * 2);
 
         this.buttonImage = scene.add.image(0, 0, this.action.getTexture()).setDisplaySize(this.buttonWidth, this.buttonHeight);
 
         this.add(this.fillGraphics);
-        this.add(this.outlineGraphics);
+        this.add(this.buttonOutline);
         this.add(this.buttonImage);
 
-        this.setSize(this.buttonWidth, this.buttonHeight);
+        this.setSize(this.buttonWidth + this.buttonPadding * 2, this.buttonHeight + this.buttonPadding * 2);
         this.setInteractive({ useHandCursor: true });
 
         this.on('pointerover', this.onButtonHover, this);
@@ -36,46 +38,42 @@ export default class ActionButton extends Phaser.GameObjects.Container {
         this.on('pointerdown', this.onButtonClick, this);
 
         scene.add.existing(this);
-        this.drawButton(0x283618);
     }
 
-    private drawButton(outlineColor: number) {
-        const x = -this.buttonWidth / 2;
-        const y = -this.buttonHeight / 2;
-
-        this.outlineGraphics.clear();
-        this.outlineGraphics.lineStyle(this.buttonOutlineWidth, outlineColor, 1);
-        this.outlineGraphics.strokeRect(x - this.buttonPadding, y - this.buttonPadding, this.buttonWidth + (this.buttonPadding * 2), this.buttonHeight + (this.buttonPadding * 2));
+    private drawFill(width: number) {
+        const x = -this.buttonWidth / 2 - this.buttonPadding + 5;
+        const y = -this.buttonHeight / 2 - this.buttonPadding + 5;
+        const height = this.buttonHeight + this.buttonPadding * 2 - 10;
+        const radius = 20;
 
         this.fillGraphics.clear();
-        if (this.actionProgress > 0) {
-            this.fillGraphics.fillStyle(0xffb703, 1);
-            this.fillGraphics.fillRect(x - this.buttonPadding, y - this.buttonPadding, this.actionProgress, this.buttonHeight + (this.buttonPadding * 2));
-        }
+        this.fillGraphics.fillStyle(0xffb703, 1);
+
+        this.fillGraphics.fillRoundedRect(x, y, width, height, { tl: radius, tr: radius, bl: radius, br: radius });
     }
 
     private onButtonHover() {
-        this.drawButton(0xbc6c25);
+        this.buttonOutline.setTexture('square-highlight');
     }
 
     private onButtonOut() {
-        this.drawButton(0x283618);
+        this.buttonOutline.setTexture('square');
     }
 
     private onButtonClick() {
         let duration = getFillDuration();
         this.scene.tweens.add({
             targets: this,
-            actionProgress: { from: 0, to: this.buttonWidth + (this.buttonPadding * 2) },
+            actionProgress: { from: 0, to: this.buttonWidth + this.buttonPadding * 2 - 10},
             duration,
             onUpdate: () => {
-                this.drawButton(0xbc6c25);
+                this.drawFill(this.actionProgress);
             },
             onComplete: () => {
                 this.actionProgress = 0;
-                this.drawButton(0x283618);
-                this.setVisible(false);
-                eventBus.emit(this.action.getName()); 
+                this.fillGraphics.clear();
+                eventBus.emit(this.action.getName());
+                this.onClick();
             }
         });
     }

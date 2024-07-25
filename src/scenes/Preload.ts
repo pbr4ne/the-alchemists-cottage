@@ -17,7 +17,7 @@ export default class Preload extends Phaser.Scene {
     protected create() {
         this.loadFonts(() => {
             if (checkUrlParam("fast", "true")) {
-                this.scene.start("Prologue");
+                this.scene.start("Game");
             } else {
                 this.scene.start("Intro");
             }

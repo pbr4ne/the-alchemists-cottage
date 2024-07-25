@@ -2,14 +2,59 @@
     "section1": {
         "files": [
             {
-                "url": "assets/images/kettle.svg",
+                "url": "assets/images/kitchen/cheese.svg",
+                "type": "image",
+                "key": "cheese"
+            },
+            {
+                "url": "assets/images/kitchen/fruit.svg",
+                "type": "image",
+                "key": "fruit"
+            },
+            {
+                "url": "assets/images/kitchen/kettle.svg",
                 "type": "image",
                 "key": "kettle"
             },
             {
-                "url": "assets/images/kitchen.svg",
+                "url": "assets/images/kitchen/kitchen.svg",
                 "type": "image",
                 "key": "kitchen"
+            },
+            {
+                "url": "assets/images/kitchen/ladle.svg",
+                "type": "image",
+                "key": "ladle"
+            },
+            {
+                "url": "assets/images/kitchen/mortar.svg",
+                "type": "image",
+                "key": "mortar"
+            },
+            {
+                "url": "assets/images/kitchen/oven.svg",
+                "type": "image",
+                "key": "oven"
+            },
+            {
+                "url": "assets/images/ui/square.svg",
+                "type": "image",
+                "key": "square"
+            },
+            {
+                "url": "assets/images/ui/square-highlight.svg",
+                "type": "image",
+                "key": "square-highlight"
+            },
+            {
+                "url": "assets/images/kitchen/teacup.svg",
+                "type": "image",
+                "key": "teacup"
+            },
+            {
+                "url": "assets/images/kitchen/utensils.svg",
+                "type": "image",
+                "key": "utensils"
             }
         ]
     },

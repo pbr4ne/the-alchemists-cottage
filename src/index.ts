@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import Intro from "./scenes/Intro";
 import Preload from "./scenes/Preload";
 import Prologue from "./scenes/Prologue";
+import Game from "./scenes/Game";
 
 const game = new Phaser.Game({
     width: 1920,
@@ -11,7 +12,7 @@ const game = new Phaser.Game({
         mode: Phaser.Scale.ScaleModes.FIT,
         autoCenter: Phaser.Scale.Center.CENTER_BOTH
     },
-    scene: [Preload, Intro, Prologue],
+    scene: [Preload, Intro, Prologue, Game],
     transparent: true,
     input: {
         activePointers: 3,

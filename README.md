@@ -2,32 +2,23 @@
 
 A game.
 
-### Project setup
-```
-npm install
-```
+## Made using Phaser
 
-### Compiles and hot-reloads for development
-```
-npm run dev
-```
+## First steps
 
-### Compiles and minifies for production
-```
-npm run build
-```
+This project requires [Node.js](https://nodejs.org) and [NPM.js](https://www.npmjs.com). 
 
-### Locally previews build
-```
-npm run preview
-```
+* Install dependencies:
 
-### Runs unit test suite
-```
-npm run unit
-```
+    ```
+    npm install
+    npm update
+    ```
 
-### Runs end-to-end test suite
-```
-npm run e2e
-```
+* Run the development server:
+
+    ```
+    npm start
+    ```
+
+    Open the browser at `http://127.0.0.1:8080`.

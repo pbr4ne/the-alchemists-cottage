@@ -1,30 +1,37 @@
 {
   "name": "the-alchemists-cottage",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "The Alchemist's Cottage",
+  "main": "webpack.config.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview",
-    "unit": "jest src",
-    "e2e": "set NODE_OPTIONS=--openssl-legacy-provider && cypress run"
+    "start": "webpack serve --mode=development --stats-error-details --no-open",
+    "build": "webpack --mode=production && phaser-asset-pack-hashing -r dist",
+    "editor": "phasereditor2d-launcher -project . -port 1959",
+    "editor-remote": "phasereditor2d-launcher -project . -disable-open-browser -public -port 1959",
+    "editor-dev": "phasereditor2d-launcher -project . -public -port 1959 -editor $PHASEREDITOR_HOME/PhaserEditor2D-v3/source/editor -dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pbr4ne",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/webfontloader": "^1.6.38",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^8.1.1",
+    "html-webpack-plugin": "^5.6.0",
+    "phaser-asset-pack-hashing": "^1.0.6",
+    "ts-loader": "^8.4.0",
+    "typescript": "^4.9.5",
+    "webpack": "^5.91.0",
+    "webpack-clean-plugin": "^0.2.3",
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "vue": "^3.2.25"
-  },
-  "devDependencies": {
-    "@types/jest": "^27.4.0",
-    "@vitejs/plugin-vue": "^2.0.0",
-    "@vue/test-utils": "^2.0.0-rc.18",
-    "cypress": "^9.2.1",
-    "esbuild": "^0.14.11",
-    "eslint": "^8.7.0",
-    "eslint-plugin-vue": "^8.3.0",
-    "jest": "^26.6.3",
-    "start-server-and-test": "^1.14.0",
-    "ts-jest": "^26.5.6",
-    "typescript": "^4.5.4",
-    "vite": "^2.7.2",
-    "vue-jest": "^5.0.0-alpha.10",
-    "vue-tsc": "^0.29.8"
+    "@phaserjs/editor-scripts-core": "^2.0.0",
+    "@phaserjs/editor-scripts-simple-animations": "^2.0.0",
+    "idb": "^8.0.0",
+    "phaser": "^3.80.1",
+    "webfontloader": "^1.6.28",
+    "webpack-dev-server": "^4.15.2"
   }
 }

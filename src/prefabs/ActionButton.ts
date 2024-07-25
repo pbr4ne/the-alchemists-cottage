@@ -47,7 +47,7 @@ export default class ActionButton extends Phaser.GameObjects.Container {
 
         this.outlineGraphics.clear();
         this.outlineGraphics.lineStyle(this.buttonOutlineWidth, outlineColor, 1);
-        this.outlineGraphics.strokeRect(x, y, this.buttonWidth, this.buttonHeight);
+        this.outlineGraphics.strokeRect(x - 5, y -5, this.buttonWidth + 10, this.buttonHeight + 10);
 
         this.fillGraphics.clear();
         if (this.actionProgress > 0) {

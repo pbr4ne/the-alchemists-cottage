@@ -2,12 +2,12 @@
     "section1": {
         "files": [
             {
-                "url": "assets/images/kettle.png",
+                "url": "assets/images/kettle.svg",
                 "type": "image",
                 "key": "kettle"
             },
             {
-                "url": "assets/images/kitchen.png",
+                "url": "assets/images/kitchen.svg",
                 "type": "image",
                 "key": "kitchen"
             }

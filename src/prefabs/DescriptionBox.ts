@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { getTypingDelay, getFadeDuration } from '../utilities/Timing';
 
 export default class DescriptionBox extends Phaser.GameObjects.Container {
     private textBox: Phaser.GameObjects.Text;
@@ -8,17 +9,17 @@ export default class DescriptionBox extends Phaser.GameObjects.Container {
     private typingDelay: number;
     private onCompleteCallback?: () => void;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, width: number, textContent: string, typingDelay: number, onCompleteCallback?: () => void) {
+    constructor(scene: Phaser.Scene, x: number, y: number, width: number, textContent: string, onCompleteCallback?: () => void) {
         super(scene, x, y);
 
         this.textContent = textContent;
-        this.typingDelay = typingDelay;
+        this.typingDelay = getTypingDelay();
         this.onCompleteCallback = onCompleteCallback;
 
         this.textBox = scene.add.text(0, 0, '', {
             fontFamily: 'Arvo',
             fontSize: '24px',
-            color: '#000000',
+            color: '#283618',
             align: 'left',
             wordWrap: { width: width * 2, useAdvancedWrap: true }
         });
@@ -64,7 +65,7 @@ export default class DescriptionBox extends Phaser.GameObjects.Container {
         this.scene.tweens.add({
             targets: this.textBox,
             alpha: 0,
-            duration: 3000,
+            duration: getFadeDuration(),
             onComplete: () => {
                 this.textBox.alpha = 1;
                 callback();

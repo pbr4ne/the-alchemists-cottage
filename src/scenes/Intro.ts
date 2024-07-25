@@ -57,7 +57,7 @@ export default class Intro extends BaseScene {
             this.time.removeAllEvents();
 
             this.time.delayedCall(500, () => {
-                new FadeScript(this, this.text, false, 3000, () => {
+                new FadeScript(this, this.text, false, () => {
                     this.scene.start('Prologue');
                 });
             });

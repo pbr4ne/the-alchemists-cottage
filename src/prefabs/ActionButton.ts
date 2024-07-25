@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import FadeScript from '../scripts/FadeScript';
+import { getFillDuration } from '../utilities/Timing';
 
 export default class ActionButton extends Phaser.GameObjects.Container {
     private outlineGraphics: Phaser.GameObjects.Graphics;
@@ -67,18 +69,17 @@ export default class ActionButton extends Phaser.GameObjects.Container {
     }
 
     private onButtonClick(onClick: () => void) {
-        let duration = 5000;
         this.scene.tweens.add({
             targets: this,
             kettleProgress: { from: 0, to: this.buttonWidth },
-            duration,
+            duration: getFillDuration(),
             onUpdate: () => {
                 this.drawButton(0xbc6c25);
             },
             onComplete: () => {
                 this.kettleProgress = 0;
                 this.drawButton(0x283618);
-                this.fadeOut(() => {
+                new FadeScript(this.scene, this as unknown as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, false, () => {
                     this.setVisible(false);
                     onClick();
                 });
@@ -86,26 +87,10 @@ export default class ActionButton extends Phaser.GameObjects.Container {
         });
     }
 
-    private fadeOut(callback: () => void) {
-        this.scene.tweens.add({
-            targets: this,
-            alpha: 0,
-            duration: 1000,
-            onComplete: () => {
-                callback();
-            }
-        });
-    }
-
     public resetButton(label: string) {
         this.buttonText.setText(label);
         this.setVisible(true);
-        this.setAlpha(0);
-        this.scene.tweens.add({
-            targets: this,
-            alpha: 1,
-            duration: 1000
-        });
+        new FadeScript(this.scene, this as unknown as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, true);
     }
 
     public getButtonText(): string {

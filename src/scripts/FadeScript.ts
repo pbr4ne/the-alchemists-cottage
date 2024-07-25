@@ -1,22 +1,18 @@
 import Phaser from "phaser";
-import { checkUrlParam } from "../utilities/GameUtils";
+import { getFadeDuration } from "../utilities/Timing";
 
 export default class FadeScript {
     constructor(
         scene: Phaser.Scene,
         fadeObject: Phaser.GameObjects.GameObject & Phaser.GameObjects.Components.Alpha,
         fadeIn: boolean,
-        duration: number = 3000,
-        onCompleteCallback?: () => void
+        onCompleteCallback?: () => void,
+        duration: number = getFadeDuration()
     ) {
         if (fadeIn) {
             fadeObject.setAlpha(0);
         } else {
             fadeObject.setAlpha(1);
-        }
-
-        if (checkUrlParam("fast", "true")) {
-            duration = 500;
         }
 
         scene.tweens.add({

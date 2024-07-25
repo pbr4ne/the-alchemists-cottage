@@ -1,22 +1,21 @@
 import Phaser from "phaser";
-import FadeScript from "../scripts/FadeScript";
 import ActionButton from "../prefabs/ActionButton";
 import DescriptionBox from "../prefabs/DescriptionBox";
-import { checkUrlParam } from "../utilities/GameUtils";
+import FadeScript from "../scripts/FadeScript";
 
 export default class Prologue extends Phaser.Scene {
 
     private button!: ActionButton;
     private descriptionBox!: DescriptionBox;
+
     private textContent1: string = "You wake up to the sound of a tea kettle whistling. The bed you're in is warm and inviting. You feel sad for some reason, though you're not sure why.";
     private buttonContent1: string = "Pick up kettle";
-    private textContent2: string = "The tea smells floral, with a delicate spice. You know there are teacups in the kitchen, though you can't remember ever being in the kitchen before.";
+    private textContent2: string = "The tea smells floral and like a delicate spice. You know there are teacups in the kitchen, though you can't remember ever being in the kitchen before.";
     private buttonContent2: string = "Go to kitchen";
     private textContent3: string = "You see a dusty kitchen nook.";
     
-    private currentTextContent: string;
+    private currentTextContent: string = "";
     private buttonWidth: number = 200;
-    private typingDelay: number = 50;
 
     constructor() {
         super("Prologue");
@@ -29,11 +28,7 @@ export default class Prologue extends Phaser.Scene {
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
 
-        if (checkUrlParam("fast", "true")) {
-            this.typingDelay = 10;
-        }
-
-        this.descriptionBox = new DescriptionBox(this, centerX - this.buttonWidth, centerY - 150, this.buttonWidth, this.currentTextContent, this.typingDelay, () => {
+        this.descriptionBox = new DescriptionBox(this, centerX - this.buttonWidth, centerY - 150, this.buttonWidth, this.currentTextContent, () => {
             this.fadeInButton(this.buttonContent1);
         });
 
@@ -65,7 +60,7 @@ export default class Prologue extends Phaser.Scene {
     }
 
     private fadeOutButtonAndText(callback: () => void) {
-        new FadeScript(this, this.button as unknown as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, false, 3000);
+        new FadeScript(this, this.button as unknown as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, false);
         this.descriptionBox.fadeOut(callback);
     }
 }

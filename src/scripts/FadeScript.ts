@@ -21,7 +21,7 @@ export default class FadeScript {
             ease: 'Power2',
             onComplete: () => {
                 if (!fadeIn) {
-                    fadeObject.destroy();
+                    fadeObject.setAlpha(0);
                 }
                 if (onCompleteCallback) {
                     onCompleteCallback();

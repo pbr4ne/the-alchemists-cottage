@@ -14,6 +14,7 @@ export default class Prologue extends Phaser.Scene {
     private textContent1: string = "You wake up to the sound of a tea kettle boiling.";
     private textContent2: string = "You recall there are teacups in the kitchen.";
     private textContent3: string = "You see a dusty kitchen nook.";
+    private currentTextContent: string;
     private textIndex: number = 0;
     private typingEvent!: Phaser.Time.TimerEvent;
     private buttonContainer!: Phaser.GameObjects.Container;
@@ -21,6 +22,7 @@ export default class Prologue extends Phaser.Scene {
 
     constructor() {
         super("Prologue");
+        this.currentTextContent = this.textContent1;
     }
 
     create() {
@@ -85,34 +87,23 @@ export default class Prologue extends Phaser.Scene {
     }
 
     private renderText() {
-        if (this.textIndex < this.textContent1.length) {
-            this.textBox.text += this.textContent1[this.textIndex];
+        if (this.textIndex < this.currentTextContent.length) {
+            this.textBox.text += this.currentTextContent[this.textIndex];
             this.textIndex++;
         } else {
             this.typingEvent.remove();
-            if (this.textContent1 === this.textContent2) {
-                this.time.delayedCall(500, () => this.fadeInButton("Go to kitchen"), [], this); 
-            } else if (this.textContent1 === this.textContent3) {
-                //no button to fade in, just text
-            } else {
+            if (this.currentTextContent === this.textContent1) {
                 this.fadeInButton("Pick up kettle");
+            } else if (this.currentTextContent === this.textContent2) {
+                this.time.delayedCall(500, () => this.fadeInButton("Go to kitchen"), [], this);
             }
         }
-    }
-
-    private fadeOutText(callback: () => void) {
-        this.tweens.add({
-            targets: this.textBox,
-            alpha: 0,
-            duration: 1000,
-            onComplete: callback
-        });
     }
 
     private renderNewText(newText: string) {
         this.textBox.setText('');
         this.textBox.alpha = 1;
-        this.textContent1 = newText;
+        this.currentTextContent = newText;
         this.textIndex = 0;
         this.typingEvent = this.time.addEvent({
             delay: 50,
@@ -124,13 +115,8 @@ export default class Prologue extends Phaser.Scene {
 
     private fadeInButton(newLabel: string) {
         this.buttonText.setText(newLabel);
-        this.buttonContainer.setVisible(true); 
-        this.buttonContainer.alpha = 0;
-        this.tweens.add({
-            targets: this.buttonContainer,
-            alpha: 1,
-            duration: 1000
-        });
+        this.buttonContainer.setVisible(true);
+        new FadeScript(this, this.buttonContainer as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, true, 1000);
     }
 
     private onButtonHover() {
@@ -164,11 +150,10 @@ export default class Prologue extends Phaser.Scene {
     }
 
     private fadeOutButtonAndText(callback: () => void) {
-        this.tweens.add({
-            targets: [this.buttonContainer, this.textBox],
-            alpha: 0,
-            duration: 1000,
-            onComplete: callback
+        new FadeScript(this, this.buttonContainer as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, false, 1000);
+        new FadeScript(this, this.textBox as Phaser.GameObjects.Text & Phaser.GameObjects.Components.Alpha, false, 1000, () => {
+            this.textBox.alpha = 1;
+            callback();
         });
     }
 }

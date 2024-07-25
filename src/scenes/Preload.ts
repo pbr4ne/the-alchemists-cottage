@@ -22,7 +22,7 @@ export default class Preload extends Phaser.Scene {
     private loadFonts(callback: () => void) {
         WebFont.load({
             google: {
-                families: ['Playwrite FR Trad:wght@100..400']
+                families: ['Playwrite FR Trad:wght@100..400', 'Arvo']
             },
             active: callback,
             inactive: () => {

@@ -32,7 +32,7 @@ export default class Intro extends BaseScene {
         this.fullText = "The Alchemist's Cottage";
         this.currentText = "";
 
-        this.text = new Phaser.GameObjects.Text(this, centerX, centerY, "The Alchemist's Cottage", txtOptions);
+        this.text = new Phaser.GameObjects.Text(this, centerX, centerY, "", txtOptions);
 		this.text.setOrigin(0.5, 0.5);
         this.add.existing(this.text);
 

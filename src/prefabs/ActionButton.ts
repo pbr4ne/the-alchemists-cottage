@@ -8,18 +8,16 @@ export default class ActionButton extends Phaser.GameObjects.Container {
     private outlineGraphics: Phaser.GameObjects.Graphics;
     private fillGraphics: Phaser.GameObjects.Graphics;
     private buttonImage: Phaser.GameObjects.Image;
-    private buttonWidth: number;
-    private buttonHeight: number;
-    private buttonOutlineWidth: number;
+    private buttonWidth: number = 80;
+    private buttonHeight: number = 80;
+    private buttonOutlineWidth: number = 5;
+    private buttonPadding: number = 20;
     private actionProgress: number = 0;
 
     constructor(scene: Phaser.Scene, x: number, y: number, action: Action) {
         super(scene, x, y);
 
         this.action = action;
-        this.buttonWidth = 100;
-        this.buttonHeight = 100;
-        this.buttonOutlineWidth = 5;
 
         this.outlineGraphics = scene.add.graphics();
         this.fillGraphics = scene.add.graphics();
@@ -47,12 +45,12 @@ export default class ActionButton extends Phaser.GameObjects.Container {
 
         this.outlineGraphics.clear();
         this.outlineGraphics.lineStyle(this.buttonOutlineWidth, outlineColor, 1);
-        this.outlineGraphics.strokeRect(x - 5, y -5, this.buttonWidth + 10, this.buttonHeight + 10);
+        this.outlineGraphics.strokeRect(x - this.buttonPadding, y - this.buttonPadding, this.buttonWidth + (this.buttonPadding * 2), this.buttonHeight + (this.buttonPadding * 2));
 
         this.fillGraphics.clear();
         if (this.actionProgress > 0) {
             this.fillGraphics.fillStyle(0xffb703, 1);
-            this.fillGraphics.fillRect(x, y, this.actionProgress, this.buttonHeight);
+            this.fillGraphics.fillRect(x - this.buttonPadding, y - this.buttonPadding, this.actionProgress, this.buttonHeight + (this.buttonPadding * 2));
         }
     }
 
@@ -68,7 +66,7 @@ export default class ActionButton extends Phaser.GameObjects.Container {
         let duration = getFillDuration();
         this.scene.tweens.add({
             targets: this,
-            actionProgress: { from: 0, to: this.buttonWidth },
+            actionProgress: { from: 0, to: this.buttonWidth + (this.buttonPadding * 2) },
             duration,
             onUpdate: () => {
                 this.drawButton(0xbc6c25);

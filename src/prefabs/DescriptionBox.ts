@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { getTypingDelay, getFadeDuration } from '../utilities/Timing';
+import FadeScript from '../scripts/FadeScript';
+import { getTypingDelay } from '../utilities/Timing';
 
 export default class DescriptionBox extends Phaser.GameObjects.Container {
     private textBox: Phaser.GameObjects.Text;
@@ -62,14 +63,6 @@ export default class DescriptionBox extends Phaser.GameObjects.Container {
     }
 
     public fadeOut(callback: () => void) {
-        this.scene.tweens.add({
-            targets: this.textBox,
-            alpha: 0,
-            duration: getFadeDuration(),
-            onComplete: () => {
-                this.textBox.alpha = 1;
-                callback();
-            }
-        });
+        new FadeScript(this.scene, this.textBox as Phaser.GameObjects.Text & Phaser.GameObjects.Components.Alpha, false, callback);
     }
 }

@@ -39,6 +39,7 @@ export default class ActionButton extends Phaser.GameObjects.Container {
         this.on('pointerout', this.onButtonOut, this);
         this.on('pointerdown', () => {
             this.onButtonClick(onClick);
+            this.emit('buttonClicked');
         }, this);
 
         scene.add.existing(this);
@@ -69,20 +70,19 @@ export default class ActionButton extends Phaser.GameObjects.Container {
     }
 
     private onButtonClick(onClick: () => void) {
+        let duration = getFillDuration();
         this.scene.tweens.add({
             targets: this,
             kettleProgress: { from: 0, to: this.buttonWidth },
-            duration: getFillDuration(),
+            duration,
             onUpdate: () => {
                 this.drawButton(0xbc6c25);
             },
             onComplete: () => {
                 this.kettleProgress = 0;
                 this.drawButton(0x283618);
-                new FadeScript(this.scene, this as unknown as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, false, () => {
-                    this.setVisible(false);
-                    onClick();
-                });
+                this.setVisible(false);
+                onClick();
             }
         });
     }

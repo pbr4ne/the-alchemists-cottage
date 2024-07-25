@@ -1,46 +1,41 @@
 import Phaser from 'phaser';
-import FadeScript from '../scripts/FadeScript';
 import { getFillDuration } from '../utilities/Timing';
+import Action from '../actions/Action';
+import { eventBus } from '../utilities/EventBus';
 
 export default class ActionButton extends Phaser.GameObjects.Container {
+    private action: Action;
     private outlineGraphics: Phaser.GameObjects.Graphics;
     private fillGraphics: Phaser.GameObjects.Graphics;
-    private buttonText: Phaser.GameObjects.Text;
+    private buttonImage: Phaser.GameObjects.Image;
     private buttonWidth: number;
     private buttonHeight: number;
     private buttonOutlineWidth: number;
     private actionProgress: number = 0;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, label: string, onClick: () => void) {
+    constructor(scene: Phaser.Scene, x: number, y: number, action: Action) {
         super(scene, x, y);
 
-        this.buttonWidth = 200;
-        this.buttonHeight = 50;
+        this.action = action;
+        this.buttonWidth = 100;
+        this.buttonHeight = 100;
         this.buttonOutlineWidth = 5;
 
         this.outlineGraphics = scene.add.graphics();
         this.fillGraphics = scene.add.graphics();
 
-        this.buttonText = scene.add.text(0, 0, label, {
-            fontFamily: 'Arvo',
-            fontSize: '24px',
-            color: '#283618',
-        });
-        this.buttonText.setOrigin(0.5, 0.5);
+        this.buttonImage = scene.add.image(0, 0, this.action.getTexture()).setDisplaySize(this.buttonWidth, this.buttonHeight);
 
         this.add(this.fillGraphics);
         this.add(this.outlineGraphics);
-        this.add(this.buttonText);
+        this.add(this.buttonImage);
 
         this.setSize(this.buttonWidth, this.buttonHeight);
         this.setInteractive({ useHandCursor: true });
 
         this.on('pointerover', this.onButtonHover, this);
         this.on('pointerout', this.onButtonOut, this);
-        this.on('pointerdown', () => {
-            this.onButtonClick(onClick);
-            this.emit('buttonClicked');
-        }, this);
+        this.on('pointerdown', this.onButtonClick, this);
 
         scene.add.existing(this);
         this.drawButton(0x283618);
@@ -69,7 +64,7 @@ export default class ActionButton extends Phaser.GameObjects.Container {
         this.drawButton(0x283618);
     }
 
-    private onButtonClick(onClick: () => void) {
+    private onButtonClick() {
         let duration = getFillDuration();
         this.scene.tweens.add({
             targets: this,
@@ -82,18 +77,8 @@ export default class ActionButton extends Phaser.GameObjects.Container {
                 this.actionProgress = 0;
                 this.drawButton(0x283618);
                 this.setVisible(false);
-                onClick();
+                eventBus.emit(this.action.getName()); 
             }
         });
-    }
-
-    public resetButton(label: string) {
-        this.buttonText.setText(label);
-        this.setVisible(true);
-        new FadeScript(this.scene, this as unknown as Phaser.GameObjects.Container & Phaser.GameObjects.Components.Alpha, true);
-    }
-
-    public getButtonText(): string {
-        return this.buttonText.text;
     }
 }

@@ -1,6 +1,17 @@
 {
     "section1": {
-        "files": []
+        "files": [
+            {
+                "url": "assets/images/kettle.png",
+                "type": "image",
+                "key": "kettle"
+            },
+            {
+                "url": "assets/images/kitchen.png",
+                "type": "image",
+                "key": "kitchen"
+            }
+        ]
     },
     "meta": {
         "app": "Phaser Editor 2D - Asset Pack Editor",

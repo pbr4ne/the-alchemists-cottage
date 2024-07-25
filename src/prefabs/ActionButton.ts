@@ -78,8 +78,21 @@ export default class ActionButton extends Phaser.GameObjects.Container {
             onComplete: () => {
                 this.kettleProgress = 0;
                 this.drawButton(0x283618);
-                this.setVisible(false); // Hide the button when it finishes filling
-                onClick();
+                this.fadeOut(() => {
+                    this.setVisible(false);
+                    onClick();
+                });
+            }
+        });
+    }
+
+    private fadeOut(callback: () => void) {
+        this.scene.tweens.add({
+            targets: this,
+            alpha: 0,
+            duration: 1000,
+            onComplete: () => {
+                callback();
             }
         });
     }
@@ -87,7 +100,7 @@ export default class ActionButton extends Phaser.GameObjects.Container {
     public resetButton(label: string) {
         this.buttonText.setText(label);
         this.setVisible(true);
-        this.setAlpha(0); // Start from 0 alpha for fade-in effect
+        this.setAlpha(0);
         this.scene.tweens.add({
             targets: this,
             alpha: 1,

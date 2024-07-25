@@ -12,7 +12,7 @@ export default class Intro extends BaseScene {
 		super("Intro");
 	}
 
-	editorCreate(): void {
+	protected create(): void {
         super.create();
 
         this.cameras.main.setBackgroundColor('#dda15e');
@@ -46,7 +46,7 @@ export default class Intro extends BaseScene {
 		this.events.emit("scene-awake");
 	}
 
-    addNextLetter() {
+    private addNextLetter() {
         if (this.letterIndex < this.fullText.length) {
             this.currentText += this.fullText[this.letterIndex];
             this.text.setText(this.currentText);
@@ -59,7 +59,7 @@ export default class Intro extends BaseScene {
         }
     }
 
-    fadeOutText() {
+    private fadeOutText() {
         this.tweens.add({
             targets: this.text,
             alpha: 0,
@@ -69,9 +69,5 @@ export default class Intro extends BaseScene {
                 this.text.destroy();
             }
         });
-    }
-
-    create() {
-        this.editorCreate();
     }
 }

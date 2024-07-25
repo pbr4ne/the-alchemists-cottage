@@ -17,7 +17,7 @@ export default class BaseScene extends Phaser.Scene {
         super(sceneKey);
     }
 
-    create() {
+    protected create() {
         this.input.addPointer(5);
 
         this.originalZoom = this.cameras.main.zoom;

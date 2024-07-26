@@ -51,10 +51,17 @@ export default class ActionButton extends Phaser.GameObjects.Container {
     
         if (width > 2 * radius) {
             this.fillGraphics.fillRoundedRect(x, y, width, height, { tl: radius, tr: radius, bl: radius, br: radius });
-        } else {
-            this.fillGraphics.fillRect(x, y, width, height);
+        } else {   
+            if (width < 2 * radius) {
+                if (width < radius) {
+                    this.fillGraphics.fillRect(x, y + 13, width, height - 26);
+                } else {
+                    this.fillGraphics.fillRect(x, y + 13, width, height - 26);
+                    this.fillGraphics.fillRect(x + 5, y + 6, width - 5, height - 13);
+                }
+            }
         }
-    }
+    }    
 
     private onButtonHover() {
         this.buttonOutline.setTexture('square-highlight');

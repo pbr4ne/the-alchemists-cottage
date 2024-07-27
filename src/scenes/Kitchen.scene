@@ -1,0 +1,24 @@
+{
+  "id": "01a05d71-8eb5-47cb-a6a2-9456d0d82a1a",
+  "settings": {
+    "compilerOutputLanguage": "TYPE_SCRIPT",
+    "javaScriptInitFieldsInConstructor": false,
+    "exportClass": true,
+    "autoImport": true,
+    "createMethodName": "editorCreate",
+    "compilerInsertSpaces": false,
+    "compilerTabSize": 4,
+    "borderWidth": 1920,
+    "borderHeight": 1080,
+    "borderX": 0,
+    "borderY": 0,
+    "sceneKey": "Kitchen"
+  },
+  "sceneType": "SCENE",
+  "displayList": [],
+  "meta": {
+    "app": "Phaser Editor 2D - Scene Editor",
+    "url": "https://phasereditor2d.com",
+    "contentType": "phasereditor2d.core.scene.SceneContentType"
+  }
+}

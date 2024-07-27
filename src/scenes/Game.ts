@@ -1,63 +1,42 @@
 import Phaser from 'phaser';
-import ActionButton from '../prefabs/ActionButton';
-import {
-    KITCHEN_KETTLE_ACTION,
-    KITCHEN_DISHES_ACTION,
-    KITCHEN_LADLE_ACTION,
-    KITCHEN_UTENSILS_ACTION,
-    KITCHEN_MORTAR_ACTION,
-    KITCHEN_TEACUP_ACTION,
-    KITCHEN_CHEESE_ACTION,
-    KITCHEN_OVEN_ACTION,
-    KITCHEN_FRUIT_ACTION
-} from '../actions/ActionConstants';
+import RoundedRectangleWithBorder from '../ui/RoundedRectangleWithBorder';
 
 export default class Game extends Phaser.Scene {
-    private buttonGrid: ActionButton[][];
+    private print!: Phaser.GameObjects.Text;
 
     constructor() {
-        super('Game');
-        this.buttonGrid = [];
+        super({ key: 'Game' });
     }
 
     create() {
-		this.cameras.main.setBackgroundColor('#dda15e');
+        this.cameras.main.setBackgroundColor('#dda15e');
 
-        const centerX = this.cameras.main.width / 2;
-        const centerY = this.cameras.main.height / 2;
+        const borderColor = 0x000000;
+        const borderWidth = 2;
 
-        const buttonSize = 120;
-        const spacing = 20;
-        const gridSize = 3;
+        const panel = new RoundedRectangleWithBorder(this, 800, 800, { bl: 10, br: 10, tr: 10, tl: 0 }, 0xbc6c25, borderColor, borderWidth);
+        const topButton1 = new RoundedRectangleWithBorder(this, 100, 50, { bl: 0, br: 0, tl: 10, tr: 10 }, 0x606c38, borderColor, borderWidth);
+        const topButton2 = new RoundedRectangleWithBorder(this, 100, 50, { bl: 0, br: 0, tl: 10, tr: 10 }, 0x606c38, borderColor, borderWidth);
+        const topButton3 = new RoundedRectangleWithBorder(this, 100, 50, { bl: 0, br: 0, tl: 10, tr: 10 }, 0x606c38, borderColor, borderWidth);
 
-        const startX = centerX - ((gridSize - 1) * (buttonSize + spacing)) / 2;
-        const startY = centerY - ((gridSize - 1) * (buttonSize + spacing)) / 2;
+        const tabs = this.rexUI.add.tabs({
+            x: 500,
+            y: 500,
+            panel: panel,
 
-        const actions = [
-            KITCHEN_KETTLE_ACTION,
-            KITCHEN_DISHES_ACTION,
-            KITCHEN_LADLE_ACTION,
-            KITCHEN_UTENSILS_ACTION,
-            KITCHEN_MORTAR_ACTION,
-            KITCHEN_TEACUP_ACTION,
-            KITCHEN_CHEESE_ACTION,
-            KITCHEN_OVEN_ACTION,
-            KITCHEN_FRUIT_ACTION
-        ];
+            topButtons: [topButton1, topButton2, topButton3],
 
-        for (let row = 0; row < gridSize; row++) {
-            this.buttonGrid[row] = [];
-            for (let col = 0; col < gridSize; col++) {
-                const x = startX + col * (buttonSize + spacing);
-                const y = startY + row * (buttonSize + spacing);
-
-                const action = actions[row * gridSize + col];
-                const button = new ActionButton(this, x, y, action, () => {
-                    console.log(`Button ${action.getTexture()} clicked!`);
-                });
-
-                this.buttonGrid[row][col] = button;
+            space: {
+                topButton: 5,
             }
-        }
+        })
+        .layout();
+
+        this.print = this.add.text(0, 0, '');
+        tabs.on('button.click', (button: any, groupName: string, index: number) => {
+            this.print.text += `${groupName}-${index}\n`;
+        });
     }
+
+    update() {}
 }
